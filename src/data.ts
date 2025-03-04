@@ -1,6 +1,9 @@
 // https://openapi.coinstats.app/
 
-export const cryptoData = {
+import { AssetType, CryptoType, MetaType } from "./api";
+
+
+export const cryptoData: { result: CryptoType[], meta: MetaType; } = {
   result: [
     {
       id: 'bitcoin',
@@ -609,9 +612,9 @@ export const cryptoData = {
     hasPreviousPage: false,
     hasNextPage: true,
   },
-}
+};
 
-export const cryptoAssets = [
+export const cryptoAssets: AssetType[] = [
   {
     id: 'bitcoin',
     amount: 0.02,
@@ -623,5 +626,10 @@ export const cryptoAssets = [
     amount: 5,
     price: 2400,
     date: new Date(),
+  }, {
+    id: 'dogecoin',
+    amount: 10000,
+    price: 0.079,
+    date: new Date(),
   },
-]
+];

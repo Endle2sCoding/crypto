@@ -25,9 +25,9 @@ export type CryptoType = {
   redditUrl: string;
   websiteUrl: string;
   twitterUrl: string;
-  contractAddress: string;
-  decimals: 18;
-  explorers: string[];
+  contractAddress?: string;
+  decimals?: number;
+  explorers?: string[];
 };
 export type MetaType = {
   page: number;
@@ -39,7 +39,7 @@ export type MetaType = {
 };
 
 export function fakeFetchCrypto() {
-  return new Promise((resolve) => {
+  return new Promise<{ result: CryptoType[], meta: MetaType; }>((resolve) => {
     setTimeout(() => {
       resolve(cryptoData);
     }, 1);
