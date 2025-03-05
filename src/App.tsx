@@ -1,18 +1,19 @@
 import "./App.css";
-import { Layout } from "antd";
-import AppHeader from "./components/layout/AppHeader";
-import AppSider from "./components/layout/AppSider";
-import ApContetnt from "./components/layout/ApContetnt";
+
+import { CryptoContextProvider, useCrypto } from "./context/cryptoContext";
+import AppLayout from "./components/layout/AppLayout";
+
+import { Spin } from "antd";
 
 function App() {
+  const { loading } = useCrypto();
+  if (loading) {
+    return <Spin fullscreen />;
+  }
   return (
-    <Layout>
-      <AppHeader />
-      <Layout>
-        <AppSider />
-        <ApContetnt />
-      </Layout>
-    </Layout>
+    <CryptoContextProvider>
+      <AppLayout />
+    </CryptoContextProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-import { Card, Layout, List, Spin, Statistic, Typography, Tag } from "antd";
+import { Card, Layout, List, Statistic, Typography, Tag } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { CSSProperties, useContext } from "react";
 
@@ -9,15 +9,12 @@ const siderStyle: CSSProperties = {
   textAlign: "center",
   lineHeight: "120px",
   color: "#fff",
-  backgroundColor: "#1677ff",
   padding: `1rem`,
 };
 
 export default function AppSider() {
-  const { loading, assets } = useContext(CryptoContext);
-  if (loading) {
-    return <Spin fullscreen />;
-  }
+  const { assets } = useContext(CryptoContext);
+
   return (
     <Layout.Sider
       width="25%"

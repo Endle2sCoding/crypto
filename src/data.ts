@@ -629,7 +629,7 @@ export const cryptoAssets: AssetType[] = [
   }, {
     id: 'dogecoin',
     amount: 10000,
-    price: 0.079,
+    price: 0.076,
     date: new Date(),
   },
 ];

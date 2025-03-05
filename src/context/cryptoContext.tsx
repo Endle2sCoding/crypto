@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { AssetType, CryptoType, fakeFetchCrypto, fetchAssets } from "../api";
 import { percentDifferent } from "../utils/utils";
 
@@ -33,9 +39,7 @@ export const CryptoContextProvider = ({
       const assets = await fetchAssets();
       setAssets(
         assets.map((asset: AssetType) => {
-          const coin = result.find(
-            (c: CryptoType) => c.id === asset.id
-          );
+          const coin = result.find((c: CryptoType) => c.id === asset.id);
           return {
             grow: coin ? asset.price < coin.price : false,
             growPercent: coin ? percentDifferent(asset.price, coin.price) : 0,
@@ -65,3 +69,6 @@ export const CryptoContextProvider = ({
   );
 };
 export default CryptoContext;
+export function useCrypto() {
+  return useContext(CryptoContext);
+}
