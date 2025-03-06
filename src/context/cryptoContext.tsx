@@ -69,6 +69,10 @@ export const CryptoContextProvider = ({
   );
 };
 export default CryptoContext;
-export function useCrypto() {
+export function useCrypto(): {
+  assets: AssetsStateType[];
+  crypto: CryptoType[];
+  loading: boolean;
+} {
   return useContext(CryptoContext);
 }
