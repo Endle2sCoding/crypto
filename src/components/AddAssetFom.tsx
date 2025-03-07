@@ -1,13 +1,17 @@
-import { Button, Checkbox, Divider, Flex, Form, Input, Select, Space, Typography } from "antd";
+import {
+  Button,
+  DatePicker,
+  Divider,
+  Flex,
+  Form,
+  InputNumber,
+  Select,
+  Space,
+  Typography,
+} from "antd";
 import { useState } from "react";
 import { useCrypto } from "../context/cryptoContext";
 import { CryptoType } from "../api";
-
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
-};
 
 export default function AddAssetFom() {
   const { crypto } = useCrypto();
@@ -38,8 +42,23 @@ export default function AddAssetFom() {
       />
     );
   }
+  // { amount: 2132; price: 12313; total: number }
+  function onFinish(values: any) {
+    console.log("onFinish values", values);
+  }
   return (
-    <Form action="#">
+    <Form
+      name="basic"
+      labelCol={{
+        span: 4,
+      }}
+      wrapperCol={{
+        span: 10,
+      }}
+      style={{ maxWidth: 600 }}
+      initialValues={{}}
+      onFinish={onFinish}
+    >
       <Flex>
         <img
           src={coin.icon}
@@ -54,31 +73,60 @@ export default function AddAssetFom() {
         </Typography.Title>
       </Flex>
       <Divider />
-      <Form.Item<FieldType>
-      label="Username"
-      name="username"
-      rules={[{ required: true, message: 'Please input your username!' }]}
-    >
-      <Input />
-    </Form.Item>
 
-    <Form.Item<FieldType>
-      label="Password"
-      name="password"
-      rules={[{ required: true, message: 'Please input your password!' }]}
-    >
-      <Input.Password />
-    </Form.Item>
+      <Form.Item
+        label="Amount"
+        name="amount"
+        rules={[
+          {
+            type: "number",
+            required: true,
+            min: 0,
+            message: "Please input your amount!",
+          },
+        ]}
+      >
+        <InputNumber style={{ width: "100%" }} />
+      </Form.Item>
 
-    <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item>
+      <Form.Item
+        label="Price"
+        name="price"
+      >
+        <InputNumber
+          disabled
+          style={{ width: "100%" }}
+        />
+      </Form.Item>
 
-    <Form.Item label={null}>
-      <Button type="primary" htmlType="submit">
-        Submit
-      </Button>
-    </Form.Item>
+      <Form.Item
+        label="Data & Tine"
+        name="date"
+      >
+        <DatePicker
+          showTime
+          style={{ width: "100%" }}
+        />
+      </Form.Item>
+
+      <Form.Item
+        label="Total"
+        name="total"
+      >
+        <InputNumber
+          disabled
+          style={{ width: "100%" }}
+        />
+      </Form.Item>
+
+      <Form.Item label={null}>
+        <Button
+          type="primary"
+          htmlType="submit"
+        >
+          Add Asset
+        </Button>
+      </Form.Item>
     </Form>
   );
 }

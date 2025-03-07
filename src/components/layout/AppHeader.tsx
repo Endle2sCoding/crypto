@@ -77,7 +77,7 @@ export default function AppHeader() {
         {coin && <CoinInfoModal coin={coin} />}
       </Modal>
       <Drawer
-        destroyOnClose
+        destroyOnCloseeeeee
         width={600}
         title="Basic Drawer"
         onClose={() => setDrawer(false)}
