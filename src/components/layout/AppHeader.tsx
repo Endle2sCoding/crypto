@@ -2,9 +2,10 @@ import { Button, Drawer, Layout, Modal } from "antd";
 import { CSSProperties, useEffect, useState } from "react";
 import { Select, Space } from "antd";
 import { useCrypto } from "../../context/cryptoContext";
-import CoinInfoModal from "../CoinINfoModal";
+
 import { CryptoType } from "../../api";
 import AddAssetFom from "../AddAssetFom";
+import CoinInfoModal from "../CoinInfoModal";
 
 const headerStyle: CSSProperties = {
   width: `100%`,
@@ -77,13 +78,13 @@ export default function AppHeader() {
         {coin && <CoinInfoModal coin={coin} />}
       </Modal>
       <Drawer
-        destroyOnCloseeeeee
+        destroyOnClose
         width={600}
         title="Basic Drawer"
         onClose={() => setDrawer(false)}
         open={drawer}
       >
-        <AddAssetFom />
+        <AddAssetFom onClose={() => setDrawer(false)} />
       </Drawer>
     </Layout.Header>
   );

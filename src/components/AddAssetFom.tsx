@@ -2,20 +2,53 @@ import {
   Button,
   DatePicker,
   Divider,
-  Flex,
   Form,
   InputNumber,
+  Result,
   Select,
   Space,
-  Typography,
 } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCrypto } from "../context/cryptoContext";
-import { CryptoType } from "../api";
+import { AssetType, CryptoType } from "../api";
+import CoinInfo from "./CoinInfo";
 
-export default function AddAssetFom() {
+const validateMessages = {
+  required: "${label} is Required!",
+  types: {
+    number: "${label} is not valid number",
+  },
+  number: {
+    range: "${label} must be between ${min} and ${max}",
+  },
+};
+export default function AddAssetFom({ onClose }: { onClose: () => void }) {
+  const [form] = Form.useForm();
   const { crypto } = useCrypto();
   const [coin, setCoin] = useState<CryptoType | null | undefined>(null);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  console.log("submitted", submitted);
+  const assetRef = useRef({});
+
+  if (submitted) {
+    <Result
+      status="success"
+      title="You Asset Added"
+      subTitle={`Added ${assetRef.current.amount} of ${
+        coin && coin.name
+      } by price ${assetRef.current.price}`}
+      extra={[
+        <Button
+          type="primary"
+          key="console"
+          onClick={onClose}
+        >
+          Go Console
+        </Button>,
+        <Button key="buy">Buy Again</Button>,
+      ]}
+    />;
+  }
   if (!coin) {
     return (
       <Select
@@ -42,12 +75,38 @@ export default function AddAssetFom() {
       />
     );
   }
-  // { amount: 2132; price: 12313; total: number }
-  function onFinish(values: any) {
+  function onFinish<Type>(values: {
+    amount: number;
+    price: number;
+    total: number;
+    date: Type;
+  }) {
     console.log("onFinish values", values);
+    const newAsset = {
+      id: coin && coin.id,
+      amoint: values.amount,
+      price: values.price,
+      date: values.date?.$d ?? new Date(),
+    };
+    assetRef.current = newAsset;
+    setSubmitted(true);
+  }
+  function handleAmountChange<Type>(value: Type) {
+    const price = form.getFieldValue("price");
+    form.setFieldsValue({
+      total: +((value as number) * price).toFixed(2),
+    });
+  }
+  function handlePriceChange<Type>(value: Type) {
+    const amount = form.getFieldValue("amount");
+    form.setFieldsValue({
+      total: +(amount * (value as number)).toFixed(2),
+    });
   }
   return (
     <Form
+      form={form}
+      validateMessages={validateMessages}
       name="basic"
       labelCol={{
         span: 4,
@@ -56,22 +115,12 @@ export default function AddAssetFom() {
         span: 10,
       }}
       style={{ maxWidth: 600 }}
-      initialValues={{}}
+      initialValues={{
+        price: +coin.price.toFixed(2),
+      }}
       onFinish={onFinish}
     >
-      <Flex>
-        <img
-          src={coin.icon}
-          alt={coin.name}
-          style={{ width: 40, height: 40, marginRight: 10 }}
-        />
-        <Typography.Title
-          level={2}
-          style={{ margin: 0 }}
-        >
-          {coin.name}
-        </Typography.Title>
-      </Flex>
+      <CoinInfo coin={coin} />
       <Divider />
 
       <Form.Item
@@ -82,11 +131,15 @@ export default function AddAssetFom() {
             type: "number",
             required: true,
             min: 0,
-            message: "Please input your amount!",
           },
         ]}
       >
-        <InputNumber style={{ width: "100%" }} />
+        <InputNumber
+          type="number"
+          style={{ width: "100%" }}
+          placeholder="Enter coin amount"
+          onChange={handleAmountChange}
+        />
       </Form.Item>
 
       <Form.Item
@@ -94,7 +147,8 @@ export default function AddAssetFom() {
         name="price"
       >
         <InputNumber
-          disabled
+          type="number"
+          onChange={handlePriceChange}
           style={{ width: "100%" }}
         />
       </Form.Item>

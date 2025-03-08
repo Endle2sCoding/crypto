@@ -1,17 +1,14 @@
-import { Divider, Flex, Tag, Typography } from "antd";
+import { Divider,  Tag, Typography } from "antd";
 import { CryptoType } from "../api";
+import CoinInfo from "./CoinInfo";
 
 export default function CoinInfoModal({ coin }: { coin: CryptoType }) {
   return (
     <>
-      <Flex>
-        <Typography.Title
-          level={2}
-          style={{ margin: 0 }}
-        >
-          ({coin.symbol}){coin.name}
-        </Typography.Title>
-      </Flex>
+      <CoinInfo
+        coin={coin}
+        withSymbol
+      />
       <Divider />
       <Typography.Paragraph>
         <Typography.Text strong>1 hour:</Typography.Text>
