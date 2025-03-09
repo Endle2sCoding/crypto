@@ -1,6 +1,5 @@
 import {
   Button,
-  DatePicker,
   Divider,
   Form,
   InputNumber,
@@ -22,39 +21,41 @@ const validateMessages = {
     range: "${label} must be between ${min} and ${max}",
   },
 };
+
 export default function AddAssetFom({ onClose }: { onClose: () => void }) {
   const [form] = Form.useForm();
-  const { crypto } = useCrypto();
+  const { crypto, addAsset } = useCrypto();
   const [coin, setCoin] = useState<CryptoType | null | undefined>(null);
   const [submitted, setSubmitted] = useState<boolean>(false);
-  console.log("submitted", submitted);
-  const assetRef = useRef({});
+
+  const assetRef = useRef<AssetType>(null);
 
   if (submitted) {
-    <Result
-      status="success"
-      title="You Asset Added"
-      subTitle={`Added ${assetRef.current.amount} of ${
-        coin && coin.name
-      } by price ${assetRef.current.price}`}
-      extra={[
-        <Button
-          type="primary"
-          key="console"
-          onClick={onClose}
-        >
-          Go Console
-        </Button>,
-        <Button key="buy">Buy Again</Button>,
-      ]}
-    />;
+    return (
+      <Result
+        status="success"
+        title="You Asset Added"
+        subTitle={`Added ${assetRef?.current?.amount} of ${
+          coin && coin.name
+        } by price ${assetRef?.current?.price}`}
+        extra={[
+          <Button
+            type="primary"
+            key="console"
+            onClick={onClose}
+          >
+            Close
+          </Button>,
+        ]}
+      />
+    );
   }
   if (!coin) {
     return (
       <Select
         style={{ width: "100%" }}
         onSelect={(v) => {
-          setCoin(crypto?.find((c) => c.id === v));
+          setCoin(crypto.find((c) => c.id === v));
         }}
         placeholder="Select coin"
         options={crypto.map((coin) => ({
@@ -75,20 +76,16 @@ export default function AddAssetFom({ onClose }: { onClose: () => void }) {
       />
     );
   }
-  function onFinish<Type>(values: {
-    amount: number;
-    price: number;
-    total: number;
-    date: Type;
-  }) {
+  function onFinish(values: AssetType) {
     console.log("onFinish values", values);
     const newAsset = {
-      id: coin && coin.id,
-      amoint: values.amount,
+      id: coin!.id,
+      amount: values.amount,
       price: values.price,
-      date: values.date?.$d ?? new Date(),
+      date: new Date(),
     };
     assetRef.current = newAsset;
+    addAsset(newAsset);
     setSubmitted(true);
   }
   function handleAmountChange<Type>(value: Type) {
@@ -152,7 +149,7 @@ export default function AddAssetFom({ onClose }: { onClose: () => void }) {
           style={{ width: "100%" }}
         />
       </Form.Item>
-
+      {/* 
       <Form.Item
         label="Data & Tine"
         name="date"
@@ -161,7 +158,7 @@ export default function AddAssetFom({ onClose }: { onClose: () => void }) {
           showTime
           style={{ width: "100%" }}
         />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         label="Total"

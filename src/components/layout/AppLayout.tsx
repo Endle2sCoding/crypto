@@ -1,7 +1,7 @@
 import AppHeader from "./AppHeader";
 import { Layout } from "antd";
 import AppSider from "./AppSider";
-import ApContetnt from "./ApContetnt";
+import ApContetnt from "./AppContent";
 
 const AppLayout = () => {
   return (
