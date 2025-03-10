@@ -13,6 +13,7 @@ export type AssetsStateType = AssetType & {
   growPercent: number;
   totalAmount: number;
   totalProfit: number;
+  name: string;
 };
 const CryptoContext = createContext<{
   assets: AssetsStateType[];
@@ -40,14 +41,15 @@ export const CryptoContextProvider = ({
     result: CryptoType[]
   ): AssetsStateType[] {
     return assets.map((asset: AssetType) => {
-      const coin = result.find((c: CryptoType) => c.id === asset.id);
+      const coin = result.find(
+        (c: CryptoType) => c.id === asset.id
+      ) as CryptoType;
       return {
-        grow: coin ? asset.price < coin.price : false,
-        growPercent: coin ? percentDifferent(asset.price, coin.price) : 0,
-        totalAmount: coin ? asset.amount * coin.price : 0,
-        totalProfit: coin
-          ? asset.amount * coin.price - asset.amount * asset.price
-          : 0,
+        grow: asset.price < coin.price,
+        growPercent: percentDifferent(asset.price, coin.price),
+        totalAmount: asset.amount * coin.price,
+        totalProfit: asset.amount * coin.price - asset.amount * asset.price,
+        name: coin.name,
         ...asset,
       };
     });

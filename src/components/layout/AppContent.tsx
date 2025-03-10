@@ -1,5 +1,7 @@
 import { Layout, Typography } from "antd";
 import { useCrypto } from "../../context/cryptoContext";
+import PortfolioChart from "../PortfolioChart";
+import AssetsTable from "./AssetsTable";
 const contentStyle: React.CSSProperties = {
   textAlign: "center",
   minHeight: `calc(100vh - 60px)`,
@@ -12,7 +14,15 @@ const contentStyle: React.CSSProperties = {
 
 export default function AppContent() {
   const { assets, crypto } = useCrypto();
-  
+  // const cryptoPriceMap = crypto.reduce(
+  //   (acc: AssetsStateType[], c: CryptoType) => {
+  //     if (c.id) {
+  //       acc[c.id] = c.price;
+  //     }
+  //     return acc;
+  //   },
+  //   {}
+  // );
   return (
     <Layout.Content style={contentStyle}>
       <Typography.Title
@@ -27,11 +37,12 @@ export default function AppContent() {
               return asset.amount * coin.price;
             }
           })
-          ?.reduce((acc: number, v?: number) => (acc += v || 1), 0)
+          .reduce((acc: number, v?: number) => (acc += v || 0), 0)
           .toFixed(2)}
-        %
+        $
       </Typography.Title>
-      Content
+      <PortfolioChart />
+      <AssetsTable />
     </Layout.Content>
   );
 }

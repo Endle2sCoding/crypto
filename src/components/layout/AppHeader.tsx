@@ -19,7 +19,7 @@ const headerStyle: CSSProperties = {
 export default function AppHeader() {
   const [select, setSelect] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
-  const [drawer, setDrawer] = useState<boolean>(true);
+  const [drawer, setDrawer] = useState<boolean>(false);
   const [coin, setCoin] = useState<CryptoType | null | undefined>(null);
   const { crypto } = useCrypto();
 
