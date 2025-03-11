@@ -30,11 +30,17 @@ export default function PortfolioChart() {
         display: "flex",
         marginBottom: "1rem",
         justifyContent: "center",
-        height: "400px",
+        maxHeight: "400px",
+        maxWidth: "100%",
       }}
     >
       <Pie
-        style={{ height: "400px" }}
+        style={{
+          maxHeight: "400px",
+          maxWidth: "400px",
+          display: "flex",
+          justifyContent: "center",
+        }}
         data={data}
       />
     </div>
